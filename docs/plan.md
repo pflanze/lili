@@ -14,7 +14,14 @@ intermediary). Also see [javascript-plan](javascript-plan.md).
 3.  Scheme parser, I already have one (in C++) but it's a bit ugly in
     places, and it uses the machine stack which can lead to stack
     overflows which is bad; thus, partially take the existing one and
-    port and improve it, or write a new one from scratch.
+    port and improve it, or write a new one from scratch. (Note: point
+    3 on [javascript-plan](javascript-plan.md) will develop a
+    translator from an s-expression based language to JavaScript and
+    that could be extended to output C instead; so the hand-written C
+    based parser might be temporary only, and the attention may
+    primarily be on a subset of the necessary features just for
+    learning how the parser works, and to learn how the generated code
+    should look.)
 
 4.  the s-expression->core frontend I mentioned above, I'm currently
     working out the algorithms in Scheme.
