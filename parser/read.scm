@@ -5,7 +5,8 @@
 (defclass ParseResult
   (defclass (ParseSuccess value
                           rest))
-  (defclass (ParseFailure) ;; XX: add context, i.e. str at the start of the parsing
+  (defclass (ParseFailure) ;; XX: add context, i.e. str at the start
+                           ;; of the parsing
     (defclass (ParseFailurePrematureEof)))
   (defclass (ParseEof)))
 
