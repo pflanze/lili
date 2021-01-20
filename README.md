@@ -12,8 +12,10 @@ make use of the latter for parts of the implementation of the former.
 
 See [plan](docs/plan.md) and [javascript-plan](docs/javascript-plan.md).
 
-The resulting implementation aims for the following features:
+The resulting Scheme implementation aims for the following features:
 
+- full support for first-class continuations and tail-call
+  optimization, good debugging support
 - precise garbage collection with low latency
 - allow lexical life time analysis of variables, early letting go of
   references
