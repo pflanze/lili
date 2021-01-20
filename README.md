@@ -11,3 +11,15 @@ Rust), in a way that does not offer these features. It is the aim to
 make use of the latter for parts of the implementation of the former.
 
 See [plan](docs/plan.md) and [javascript-plan](docs/javascript-plan.md).
+
+The resulting implementation aims for the following features:
+
+- precise garbage collection with low latency
+- allow lexical life time analysis of variables, early letting go of
+  references
+- compile time warnings about unbound variables
+- relatively efficient execution for an interpreter
+- efficient loading and linking (fast startup times) once bytecode is
+  implemented
+- be able to convert (core language <-> byte code) -> some JIT
+  implementations
