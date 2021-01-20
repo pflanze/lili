@@ -3,31 +3,31 @@
 
 
 (defclass ParseResult
- (defclass (ParseSuccess value
-                         rest))
- (defclass (ParseFailure) ;; XX: add context, i.e. str at the start of the parsing
-   (defclass (ParseFailurePrematureEof)))
- (defclass (ParseEof)))
+  (defclass (ParseSuccess value
+                          rest))
+  (defclass (ParseFailure) ;; XX: add context, i.e. str at the start of the parsing
+    (defclass (ParseFailurePrematureEof)))
+  (defclass (ParseEof)))
 
 
 (def (char->decimal [(both char? char-digit?) c])
-     "Take a char in the digit range ('0'..'9') and return the corresponding number"
-     (- (char->integer c) 48))
+  "Take a char in the digit range ('0'..'9') and return the corresponding number"
+  (- (char->integer c) 48))
 
 (TEST
  > (char->decimal #\5)
  5)
 
 (def (eread-number str)
-     (def (lp sum str)
-          (if (.empty? str)
-              (ParseSuccess sum str)
-              (let (c (.first str))
-                (if (char-digit? c)
-                    (lp (+ (* sum 10) (char->decimal c))
-                        (.rest str))
-                    (ParseSuccess sum str)))))
-     (lp 0 str))
+  (def (lp sum str)
+    (if (.empty? str)
+        (ParseSuccess sum str)
+        (let (c (.first str))
+          (if (char-digit? c)
+              (lp (+ (* sum 10) (char->decimal c))
+                  (.rest str))
+              (ParseSuccess sum str)))))
+  (lp 0 str))
 
 (TEST
  > (eread-number "985")
@@ -38,16 +38,16 @@
 (def char-symbol-end? (complement char-alphanumeric?))
 
 (def (eread-symbol str)
-     (def (lp rcs str)
-          (def (return)
-               (ParseSuccess (string->symbol (.string-reverse rcs)) str))
+  (def (lp rcs str)
+    (def (return)
+      (ParseSuccess (string->symbol (.string-reverse rcs)) str))
           
-          (return)
-          (cons c rcs)
+    (return)
+    (cons c rcs)
 
-          (return)
-          )
-     (lp '() str))
+    (return)
+    )
+  (lp '() str))
 
 
 ;; eread-string: if encountering the end of the string, before seeing
@@ -70,16 +70,16 @@
 (TEST
  > (skip-comment "foo bar \n etc.")
  " etc."
-  > (skip-comment "foo bar \n ;;etc.")
+ > (skip-comment "foo bar \n ;;etc.")
  " ;;etc.")
 
 
 (def (eread str)
-     (pmatch (.first str)
-             (char-whitespace?  (eread (.rest str)))
-             (char-digit? (eread-number str))
-             (char-symbol-start? (eread-symbol str))
-             ((C char=? _ #\") (eread-string (.rest str)))))
+  (pmatch (.first str)
+          (char-whitespace?  (eread (.rest str)))
+          (char-digit? (eread-number str))
+          (char-symbol-start? (eread-symbol str))
+          ((C char=? _ #\") (eread-string (.rest str)))))
 
 
 
@@ -121,22 +121,22 @@
 
 
 (def (slurp path)
-     (call-with-input-file (list path: path
-                                 char-encoding: 'UTF-8)
-       (lambda (port)
-         (read-line port #f))))
+  (call-with-input-file (list path: path
+                              char-encoding: 'UTF-8)
+    (lambda (port)
+      (read-line port #f))))
 
 (def (penultimate-test)
-     (=> (directory-path-stream "lib")
-         (.filter (C .ends-with? _ ".scm"))
-         (.for-each (lambda (path)
-                      (let ((gamb (call-with-input-file path read-all))
-                            (ours (=> (slurp path)
-                                      eread
-                                      ((lambda (res)
-                                         (if (ParseSuccess? res)
-                                             (.value res)
-                                             (error "parse failure" res)))))))
-                        (unless (equal? gamb ours)
-                          (error "incorrect parse result")))))))
+  (=> (directory-path-stream "lib")
+      (.filter (C .ends-with? _ ".scm"))
+      (.for-each (lambda (path)
+                   (let ((gamb (call-with-input-file path read-all))
+                         (ours (=> (slurp path)
+                                   eread
+                                   ((lambda (res)
+                                      (if (ParseSuccess? res)
+                                          (.value res)
+                                          (error "parse failure" res)))))))
+                     (unless (equal? gamb ours)
+                             (error "incorrect parse result")))))))
 
