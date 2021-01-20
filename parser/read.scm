@@ -10,7 +10,9 @@
   (defclass (ParseEof)))
 
 
-(def (char->decimal [(both char? char-digit?) c])
+(def digit? (both char? char-digit?))
+
+(def (char->decimal [digit? c])
   "Take a char in the digit range ('0'..'9') and return the corresponding number"
   (- (char->integer c) 48))
 
